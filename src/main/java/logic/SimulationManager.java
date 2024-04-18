@@ -71,9 +71,6 @@ public class SimulationManager implements Runnable {
                             for (Client c : s.getClients())
                                 if (c == client) {
                                     avg += s.getWaitingPeriod().get() - c.getServiceTime();
-                                    //System.out.println(c);
-                                    //System.out.println(s.getWaitingPeriod().get());
-                                    //System.out.println(c.getServiceTime());
                                 }
                         }
                         clientIterator.remove();// - delete client from list
@@ -120,13 +117,14 @@ public class SimulationManager implements Runnable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        for(Server i: scheduler.getServers())
+        for(Server i: scheduler.getServers()) {
             i.stopLoop();
+        }
         JOptionPane.showMessageDialog(new JFrame(), "Average Waiting Time: "+ avg/(double)numberOfClients +"\nAverage Service Time: " + Generator.servTime +"\nPeek Hour: "+ peekHour, "Simulation Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {
-        SimulationManager gen = new SimulationManager(1000,20,10,100,3,9,200,SelectionPolicy.SHORTEST_TIME);
+        SimulationManager gen = new SimulationManager(10,2,3,9,3,9,200,SelectionPolicy.SHORTEST_TIME);
         Thread t = new Thread(gen);
         t.start();
     }
